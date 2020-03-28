@@ -1,0 +1,25 @@
+.login-container {
+  min-height: 100vh;
+  background-color: black;
+
+  .info-container {
+    color: white;
+  }
+
+  .login-form-container {
+    background-color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h1 {
+    color: #c13584;
+  }
+
+  .insta-logo {
+    width: 50px;
+  }
+}
