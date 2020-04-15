@@ -1,6 +1,10 @@
 import React from 'react';
-import './styles/App.scss';
+
+// Router
 import Routes from './Routes';
+
+// SCSS styles
+import './styles/App.scss';
 
 const App = () => (
   <div className="container-fluid">

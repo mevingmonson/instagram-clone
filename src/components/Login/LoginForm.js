@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export class LoginForm extends Component {
+import Button from '../Button';
+import InputField from '../InputField';
+
+export default class LoginForm extends Component {
   constructor(props) {
     super(props);
 
@@ -32,30 +35,31 @@ export class LoginForm extends Component {
 
   render() {
     return (
-      <form className="w-75" onSubmit={this.handleSubmit}>
+      <form className="w-75 text-center" onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <input
+          <InputField
             type="email"
-            name="emailId"
             className="form-control"
             placeholder="Email Address"
-            value={this.state.emailId}
-            onChange={this.handleInputChange}
+            onChange={(emailId) => this.setState({ emailId })}
           />
         </div>
         <div className="form-group">
-          <input
+          <InputField
             type="password"
-            name="password"
             className="form-control"
             placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleInputChange}
+            onChange={(password) => this.setState({ password })}
           />
         </div>
-        <button type="submit" className="btn btn-primary w-100">Sign In</button>
+        <Button
+          type="submit"
+          className="btn btn-sm btn-primary px-4"
+          disabled={!(this.state.emailId && this.state.password)}
+        >
+          Sign In
+        </Button>
       </form>
-
     );
   }
 }
@@ -63,6 +67,3 @@ export class LoginForm extends Component {
 LoginForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
-
-
-export default LoginForm;

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+// Components
+import RegisterForm from '../components/Register/RegisterForm';
+import Button from '../components/Button';
+
 // SCSS Style File of Register
 import '../styles/Register.scss';
 import InstaLogo from '../assets/instagram-icon.svg';
-import '../styles/Register.scss';
 
 
 class Register extends Component {
@@ -15,6 +18,11 @@ class Register extends Component {
 
     };
   }
+
+  handleSubmit = (formData) => {
+    console.log(formData);
+  }
+
 
   render() {
     return (
@@ -27,14 +35,14 @@ class Register extends Component {
           <h1 className="d-block d-md-none text-primary display-4">Instagram</h1>
           <h3>Register</h3>
           <p className="text-center">Start sharing your moments with your loved ones!</p>
-
-          <button
-            type="button"
+          <RegisterForm onSubmit={this.handleSubmit} />
+          <hr className="w-100" />
+          <Button
             className="btn btn-sm btn-link"
             onClick={() => this.props.history.push('/')}
           >
-            Already a user? Logim
-          </button>
+            Already a user? Login
+          </Button>
         </div>
       </div>
     );
