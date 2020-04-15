@@ -6,6 +6,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Login from './containers/Login';
 import Register from './containers/Register';
 import Feeds from './containers/Feeds';
+import ResetPassword from './containers/ResetPassword';
 
 
 // NotFound 404
@@ -36,7 +37,7 @@ export default class Routes extends Component {
           {/* When user has not logged in */}
           <Route path="/" component={BeforeLoginHOC(Login)} exact />
           <Route path="/register" component={BeforeLoginHOC(Register)} exact />
-          {/* <Route path="/reset-password" component={BeforeLoginHOC(ResetPssword)} exact /> */}
+          <Route path="/reset-password" component={BeforeLoginHOC(ResetPassword)} exact />
 
           {/* When user has logged in  */}
           <Route path="/feeds" component={AfterLoginHOC(Feeds)} exact />
@@ -46,6 +47,7 @@ export default class Routes extends Component {
 
 
           <Route component={NotFound} />
+
         </Switch>
       </BrowserRouter>
     );
