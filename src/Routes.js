@@ -5,8 +5,11 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 // containers
 import Login from './containers/Login';
 import Register from './containers/Register';
-import Feeds from './containers/Feeds';
 import ResetPassword from './containers/ResetPassword';
+import Feeds from './containers/Feeds';
+import Profile from './containers/Profile';
+import Settings from './containers/Settings';
+import Search from './containers/Search';
 
 
 // NotFound 404
@@ -41,8 +44,22 @@ export default class Routes extends Component {
 
           {/* When user has logged in  */}
           <Route path="/feeds" component={AfterLoginHOC(Feeds)} exact />
+          <Route path="/profile" component={AfterLoginHOC(Profile)} exact />
+          <Route path="/settings" component={AfterLoginHOC(Settings)} exact />
+          <Route path="/search" component={AfterLoginHOC(Search)} exact />
 
-          {/* Its Not Found Page */}
+          {/* Logout */}
+          <Route
+            path="/logout"
+            render={() => {
+              window.localStorage.clear();
+              window.location = '/';
+              return null;
+            }}
+            exact
+          />
+
+          {/* Page Not Found */}
           <Route component={NotFound} />
 
 

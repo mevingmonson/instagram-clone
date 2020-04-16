@@ -32,7 +32,7 @@ class SendResetLinkForm extends Component {
             onChange={(value) => this.setState({ emailId: value })}
           />
           <div className="input-group-append">
-            <Button className="btn btn-outline-primary" type="submit">
+            <Button className="btn btn-outline-primary" type="submit" disabled={!this.state.emailId}>
               Send
             </Button>
           </div>

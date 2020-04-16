@@ -1,1 +1,15 @@
 @import "~bootstrap/scss/bootstrap";
+
+.layout-content {
+  min-height: 85vh;
+  padding-top: 20px;
+  color: white;
+}
+
+.footer-text {
+  color: #838f9b;
+}
+
+body {
+  background-color: #525c65;
+}

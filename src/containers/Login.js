@@ -16,7 +16,12 @@ export default class Login extends Component {
   }
 
   handleSubmit = (formData) => {
-    console.log(formData);
+    if (formData.emailId === 'example@123.com' && formData.password === '123456') {
+      window.localStorage.setItem('isLoggedIn', true);
+      window.location.reload();
+    } else {
+      alert('Invalid credentials');
+    }
   }
 
   render() {
@@ -28,7 +33,7 @@ export default class Login extends Component {
           <h1>Instagram</h1>
         </div>
         <div className="col-12 col-md-4 bold login-form-container">
-          <h1 className="d-block d-md-none">Instagram</h1>
+          <h1 className="d-block d-md-none text-primary">Instagram</h1>
           <h3>Login</h3>
           <p className="text-center">Start sharing your moments with your loved ones!</p>
           <LoginForm onSubmit={this.handleSubmit} />
@@ -44,7 +49,7 @@ export default class Login extends Component {
           >
             Sign Up
           </Link>
-          <p className="mt-5">Trouble Logging?</p>
+          <Link to="/reset-password" className="mt-5 btn btn-sm btn-link">Trouble Logging?</Link>
         </div>
 
       </div>

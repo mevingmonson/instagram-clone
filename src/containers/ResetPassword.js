@@ -28,7 +28,7 @@ export default class ResetPassword extends Component {
     console.log(formData);
   };
 
-  handleResetPassowrd = (formData) => {
+  handleResetPassword = (formData) => {
     const payload = {
       ...formData,
       token: this.state.token,
@@ -57,7 +57,7 @@ export default class ResetPassword extends Component {
           {
             this.state.show === 'EMAIL_FORM'
               ? <SendResetLinkForm onSubmit={this.handleSendPasswordLink} />
-              : <ResetPasswordForm onSubmit={this.handleResetPassowrd} />
+              : <ResetPasswordForm onSubmit={this.handleResetPassword} />
           }
           <hr className="w-100" />
           <p>
