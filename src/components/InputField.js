@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class InputField extends Component {
+class InputField extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -33,6 +33,7 @@ export default class InputField extends Component {
     return (
       <input
         id={id}
+        ref={this.props.forwardRef}
         type={type}
         name={name}
         className={className}
@@ -63,6 +64,7 @@ InputField.defaultProps = {
   defaultValue: undefined,
   value: undefined,
   disabled: false,
+  forwardRef: undefined,
 };
 
 InputField.propTypes = {
@@ -76,4 +78,7 @@ InputField.propTypes = {
   defaultValue: PropTypes.string,
   value: PropTypes.any,
   disabled: PropTypes.bool,
+  forwardRef: PropTypes.any,
 };
+
+export default React.forwardRef((props, ref) => <InputField {...props} forwardRef={ref} />);
