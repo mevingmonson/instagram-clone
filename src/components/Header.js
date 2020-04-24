@@ -6,7 +6,7 @@ import DpPlaceholder from '../assets/profile-placeholder.jpg';
 import '../styles/Header.scss';
 
 const Header = ({ location }) => (
-  <nav className="row navbar sticky-top navbar-expand-lg navbar-dark bg-dark header">
+  <nav className="row navbar sticky-top navbar-expand-lg navbar-dark bg-dark-col header">
     <div className="container">
 
       <Link to="/feeds" className="navbar-brand">Instagram</Link>

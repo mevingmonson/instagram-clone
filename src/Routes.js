@@ -44,7 +44,6 @@ export default class Routes extends Component {
 
           {/* When user has logged in  */}
           <Route path="/feeds" component={AfterLoginHOC(Feeds)} exact />
-          <Route path="/profile" component={AfterLoginHOC(Profile)} exact />
           <Route path="/settings" component={AfterLoginHOC(Settings)} exact />
           <Route path="/search" component={AfterLoginHOC(Search)} exact />
 
@@ -60,10 +59,10 @@ export default class Routes extends Component {
           />
 
           {/* Page Not Found */}
-          <Route component={NotFound} />
+          <Route path="/404" component={NotFound} exact />
 
-
-          <Route component={NotFound} />
+          {/* Profile Page */}
+          <Route path="/:username" component={AfterLoginHOC(Profile)} exact />
 
         </Switch>
       </BrowserRouter>
