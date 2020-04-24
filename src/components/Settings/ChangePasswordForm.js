@@ -16,7 +16,7 @@ class ChangePasswordForm extends Component {
 
   validateCurrentPassword = (value) => {
     this.setState({
-      isCurrentPasswordValid: value === 'example',
+      isCurrentPasswordValid: value === '123456',
     });
   }
 
@@ -71,7 +71,7 @@ class ChangePasswordForm extends Component {
               disabled={!(this.state.newPassword && this.state.repeatPassword) || (this.state.newPassword !== this.state.repeatPassword)}
             >
               Change Password
-              </Button>
+            </Button>
           </>
         )}
       </form>
