@@ -9,6 +9,6 @@ import reducers from './reducers';
 
 const middleware = applyMiddleware(reduxThunk, reduxLogger);
 
-const constructStore = () => createStore(reducers, middleware);
+const configureStore = () => createStore(reducers, middleware);
 
-export default constructStore;
+export default configureStore;
