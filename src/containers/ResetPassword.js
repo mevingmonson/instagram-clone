@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 // Components
 import SendResetLinkForm from '../components/ResetPassword/SendResetLinkForm';
@@ -9,7 +11,10 @@ import ResetPasswordForm from '../components/ResetPassword/ResetPasswordForm';
 import '../styles/ResetPassword.scss';
 import InstaLogo from '../assets/instagram-icon.svg';
 
-export default class ResetPassword extends Component {
+// Redux Actions
+import { sendPasswordResetLink } from '../redux/actions/actions-auth';
+
+class ResetPassword extends Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +30,7 @@ export default class ResetPassword extends Component {
   }
 
   handleSendPasswordLink = (formData) => {
-    console.log(formData);
+    this.props.sendPasswordResetLink(formData.emailId);
   };
 
   handleResetPassword = (formData) => {
@@ -77,4 +82,12 @@ export default class ResetPassword extends Component {
   }
 }
 
-ResetPassword.propTypes = {};
+ResetPassword.propTypes = {
+  sendPasswordResetLink: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  sendPasswordResetLink: (emailId) => dispatch(sendPasswordResetLink(emailId)),
+});
+
+export default connect(null, mapDispatchToProps)(ResetPassword);

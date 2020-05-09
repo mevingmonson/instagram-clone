@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Button from '../Button';
+import { logout } from '../../redux/actions/actions-auth';
 
 import dpPlaceholder from '../../assets/profile-placeholder.jpg';
 
-const UserInfo = () => (
+const UserInfo = (props) => (
   <div className="row user-info">
     <div className="col-12 col-md-4">
       <div className="profile-pic">
@@ -12,7 +15,11 @@ const UserInfo = () => (
       </div>
     </div>
     <div className="col-12 col-md-8">
-      <h2 className="username">mevin_gm</h2>
+      <div className="username d-flex align-items-center">
+        <h2>{props.username}</h2>
+        <Button className="btn btn-sm btn-dark ml-3" onClick={props.logout}>Logout</Button>
+      </div>
+
       <div className="profile-status">
         <div className="status-item">
           <h4>47</h4>
@@ -37,4 +44,17 @@ const UserInfo = () => (
   </div>
 );
 
-export default UserInfo;
+UserInfo.propTypes = {
+  logout: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  username: state.auth.userData?.displayName,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(logout()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

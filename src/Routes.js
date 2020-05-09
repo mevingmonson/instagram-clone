@@ -95,13 +95,13 @@ Routes.defaultProps = {
 };
 
 Routes.propTypes = {
-  isLoggedIn: PropTypes.bool,
+  isLoggedIn: PropTypes.string,
   validateAuthStatus: PropTypes.func.isRequired,
   loading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: state.auth.isLoggedIn,
+  isLoggedIn: !!state.auth.userData?.uid,
   loading: state.auth.loading,
 });
 
