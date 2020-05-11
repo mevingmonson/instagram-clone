@@ -16,6 +16,8 @@ import Settings from './containers/Settings';
 import Search from './containers/Search';
 import Notifications from './containers/Notifications';
 
+// FireBaseActions
+import FireBaseActions from './containers/FireBaseActions';
 
 // NotFound 404
 import NotFound from './containers/NotFound';
@@ -66,16 +68,9 @@ class Routes extends Component {
           <Route path="/search" component={AfterLoginHOC(Search, isLoggedIn)} exact />
           <Route path="/notifications" component={AfterLoginHOC(Notifications, isLoggedIn)} exact />
 
-          {/* Logout */}
-          <Route
-            path="/logout"
-            render={() => {
-              window.localStorage.clear();
-              window.location = '/';
-              return null;
-            }}
-            exact
-          />
+          {/* FirebaseACtions */}
+          <Route path="/firebase-actions" component={FireBaseActions} exact />
+
 
           {/* Page Not Found */}
           <Route path="/404" component={NotFound} exact />
@@ -95,7 +90,7 @@ Routes.defaultProps = {
 };
 
 Routes.propTypes = {
-  isLoggedIn: PropTypes.string,
+  isLoggedIn: PropTypes.bool,
   validateAuthStatus: PropTypes.func.isRequired,
   loading: PropTypes.bool,
 };

@@ -27,6 +27,7 @@ class SendResetLinkForm extends Component {
     return (
       <>
         <Alert show={!!this.props.formError} type="danger" message={this.props.formError} />
+        <Alert show={!!this.props.successMessage} type="success" message={this.props.successMessage} />
         <form className="w-75 text-center" onSubmit={this.handleSubmit}>
           <div className="input-group mb-3">
             <InputField
@@ -58,17 +59,20 @@ class SendResetLinkForm extends Component {
 SendResetLinkForm.defaultProps = {
   formLoading: false,
   formError: null,
+  successMessage: null,
 };
 
 SendResetLinkForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
-  formError: PropTypes.string,
   formLoading: PropTypes.bool,
+  formError: PropTypes.string,
+  successMessage: PropTypes.string,
 };
 
 const mapStateToProps = (state) => ({
   formError: state.auth.formError,
   formLoading: state.auth.formLoading,
+  successMessage: state.auth.successMessage,
 });
 
 export default connect(mapStateToProps)(SendResetLinkForm);

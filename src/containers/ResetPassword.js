@@ -12,7 +12,7 @@ import '../styles/ResetPassword.scss';
 import InstaLogo from '../assets/instagram-icon.svg';
 
 // Redux Actions
-import { sendPasswordResetLink } from '../redux/actions/actions-auth';
+import { sendPasswordResetLink, resetPassword } from '../redux/actions/actions-auth';
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class ResetPassword extends Component {
       ...formData,
       token: this.state.token,
     };
-    console.log(payload);
+    this.props.resetPassword(payload);
   };
 
   render() {
@@ -84,10 +84,12 @@ class ResetPassword extends Component {
 
 ResetPassword.propTypes = {
   sendPasswordResetLink: PropTypes.func.isRequired,
+  resetPassword: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   sendPasswordResetLink: (emailId) => dispatch(sendPasswordResetLink(emailId)),
+  resetPassword: (formData) => dispatch(resetPassword(formData)),
 });
 
 export default connect(null, mapDispatchToProps)(ResetPassword);

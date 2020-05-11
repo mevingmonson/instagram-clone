@@ -5,6 +5,7 @@ const initialState = {
   formLoading: false,
   formError: null,
   userData: null,
+  successMessage: null,
 };
 
 const authReducer = (state = initialState, actions) => {
@@ -16,7 +17,9 @@ const authReducer = (state = initialState, actions) => {
 
     // Login
     case authActionTypes.LOGIN_START:
-      return { ...state, formLoading: true, formError: null };
+      return {
+        ...state, formLoading: true, formError: null, successMessage: null,
+      };
     case authActionTypes.LOGIN_SUCCESS:
       return { ...state, formLoading: false };
     case authActionTypes.LOGIN_FAILED:
@@ -24,7 +27,9 @@ const authReducer = (state = initialState, actions) => {
 
     // Register
     case authActionTypes.REGISTER_START:
-      return { ...state, formLoading: true, formError: null };
+      return {
+        ...state, formLoading: true, formError: null, successMessage: null,
+      };
     case authActionTypes.REGISTER_SUCCESS:
       return { ...state, formLoading: false };
     case authActionTypes.REGISTER_FAILED:
@@ -32,11 +37,24 @@ const authReducer = (state = initialState, actions) => {
 
     // Password Reset Link
     case authActionTypes.RESET_LINK_SEND_START:
-      return { ...state, formLoading: true, formError: null };
+      return {
+        ...state, formLoading: true, formError: null, successMessage: null,
+      };
     case authActionTypes.RESET_LINK_SEND_SUCCESS:
-      return { ...state, formLoading: false };
+      return { ...state, formLoading: false, successMessage: 'Reset Link send to your email' };
     case authActionTypes.RESET_LINK_SEND_FAILED:
       return { ...state, formLoading: false, formError: actions.payload };
+
+    // Reset Password
+    case authActionTypes.RESET_PASSWORD_START:
+      return {
+        ...state, formLoading: true, formError: null, successMessage: null,
+      };
+    case authActionTypes.RESET_PASSWORD_SUCCESS:
+      return { ...state, formLoading: false, successMessage: 'Password Reset Successfully. Directing to Login Page' };
+    case authActionTypes.RESET_PASSWORD_FAILED:
+      return { ...state, formLoading: false, formError: actions.payload };
+
     // Logout
     case authActionTypes.LOGOUT:
       return initialState;
