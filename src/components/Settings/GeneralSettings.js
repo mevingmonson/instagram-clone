@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import { auth, db } from '../../lib/firebase';
+
 import UserBioForm from './UserBioForm';
 
 class GeneralSettings extends Component {
   handleSaveSettings = (formData) => {
-    console.log(formData);
+    db.collection('users').doc(auth.currentUser.uid).update({
+      ...formData,
+    });
+    alert('Saved Scuccessfully');
   }
 
   render() {

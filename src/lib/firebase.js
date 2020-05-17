@@ -1,5 +1,8 @@
 import * as firebase from 'firebase';
 
+import 'firebase/auth';
+import 'firebase/firestore';
+
 const firebaseConfig = {
   apiKey: 'AIzaSyB1uGneHK3xzkFDpJexEHfCpza0bTg-1IQ',
   authDomain: 'instagram-mevin.firebaseapp.com',
@@ -14,8 +17,10 @@ firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth();
 const credentials = firebase.auth.EmailAuthProvider.credential;
+const db = firebase.firestore();
 
 export {
   auth,
   credentials,
+  db,
 };

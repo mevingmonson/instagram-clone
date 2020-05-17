@@ -1,5 +1,8 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
+
+import { connect } from 'react-redux';
+import { db } from '../../lib/firebase';
 import SwitchToggle from '../SwitchToggle';
 
 const PrivacySettings = (props) => (
@@ -8,13 +11,21 @@ const PrivacySettings = (props) => (
     <hr />
     <SwitchToggle
       label="Private"
-      onChange={(checked) => console.log(checked)}
+      checked={props.userData.isPrivate}
+      onChange={(checked) => db.collection('users').doc(props.userData.uid).update({
+        isPrivate: checked,
+      })}
     />
   </div>
 );
 
 PrivacySettings.defaultProps = {};
 
-PrivacySettings.propTypes = {};
+PrivacySettings.propTypes = {
+  userData: PropTypes.object.isRequired,
+};
 
-export default PrivacySettings;
+const mapStateToProps = (state) => ({
+  userData: state.auth.userData,
+});
+export default connect(mapStateToProps)(PrivacySettings);
