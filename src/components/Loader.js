@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-export default () => (
-  <div className="row align-items-center" style={{ height: '100vh' }}>
+const Loader = (props) => (
+  <div className="row align-items-center" style={props.height ? { height: props.height } : { height: '100vh' }}>
     <div className="col text-center">
       <div className="spinner-grow text-primary" role="status">
         <span className="sr-only">Loading...</span>
@@ -27,3 +28,13 @@ export default () => (
     </div>
   </div>
 );
+
+Loader.defaultProps = {
+  height: null,
+};
+
+Loader.propTypes = {
+  height: PropTypes.string,
+};
+
+export default Loader;

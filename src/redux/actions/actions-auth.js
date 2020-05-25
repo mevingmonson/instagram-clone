@@ -53,12 +53,25 @@ export const register = (formData) => async (dispatch) => {
       type: authActionTypes.REGISTER_START,
     });
     const { name, emailId, password } = formData;
+
+    // To check whether username is already present or not
+    let isUserNameAvailable = true;
+    await db.collection('users')
+      .where('username', '==', name.toLowerCase()).get()
+      .then((snapShot) => {
+        isUserNameAvailable = !snapShot.docs.length;
+      });
+    if (!isUserNameAvailable) {
+      throw new Error('Username is not available');
+    }
+
+    // registering the user on firebase
     const result = await auth.createUserWithEmailAndPassword(emailId, password);
     result.user.updateProfile({
       displayName: name,
     });
     db.collection('users').doc(result.user.uid).set({
-      username: name,
+      username: String(name).toLowerCase(),
       emailId,
       profilePic: null,
       followers: 0,
@@ -67,6 +80,7 @@ export const register = (formData) => async (dispatch) => {
       timeStamp: new Date().toISOString(),
       bio: null,
       isPrivate: true,
+      friends: [],
     });
     result.user.sendEmailVerification();
     dispatch({

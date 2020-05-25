@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
 import InputField from '../InputField';
+import { searchUsers } from '../../redux/actions/actions-search';
 
 class SearchBox extends Component {
   constructor(props) {
@@ -20,6 +22,12 @@ class SearchBox extends Component {
     });
   }
 
+  handleKeyDown = (event) => {
+    if (event.key === 'Enter' && this.state.searchText) {
+      this.props.searchUsers(this.state.searchText);
+    }
+  }
+
   render() {
     return (
       <div className="search-box">
@@ -27,6 +35,7 @@ class SearchBox extends Component {
           placeholder="Type to search. Eg: Otis Milburn"
           value={this.state.searchText}
           onChange={this.handleSearch}
+          onKeyDown={this.handleKeyDown}
         />
       </div>
     );
@@ -35,6 +44,12 @@ class SearchBox extends Component {
 
 SearchBox.defaultProps = {};
 
-SearchBox.propTypes = {};
+SearchBox.propTypes = {
+  searchUsers: PropTypes.func.isRequired,
+};
 
-export default SearchBox;
+const mapDispatchToProps = (dispatch) => ({
+  searchUsers: (searchText) => dispatch(searchUsers(searchText)),
+});
+
+export default connect(null, mapDispatchToProps)(SearchBox);

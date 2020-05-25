@@ -1,26 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 import UserItem from '../UserItem';
+import Loader from '../Loader';
+import Alert from '../Alert';
 
-const SearchResults = (props) => (
-  <div className="search-results row">
-    {new Array(10).fill(null).map((searchItem) => (
-      <div className="col-12 col-md-4 search-item">
-        <UserItem
-          enableHover
-          onClick={() => props.history.push('/profile')}
-        />
-      </div>
-    ))}
-  </div>
-);
+const SearchResults = ({
+  loading, error, list, ...props
+}) => {
+  if (loading) {
+    return <Loader height="50vh" />;
+  }
+
+  if (error) {
+    return <Alert show={!!error} type="danger" message={error} />;
+  }
+
+  return (
+    <div className="search-results row">
+      {list.map((searchItem) => (
+        <div key={searchItem.uid} className="col-12 col-md-4 search-item">
+          <UserItem
+            {...searchItem}
+            enableHover
+            onClick={() => props.history.push(`/${searchItem.username}`)}
+          />
+        </div>
+      ))}
+    </div>
+  );
+};
 
 SearchResults.defaultProps = {
+  loading: false,
+  error: null,
+  list: [],
 };
 
 SearchResults.propTypes = {
   history: PropTypes.object.isRequired,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
+  list: PropTypes.array,
 };
 
-export default withRouter(SearchResults);
+const mapStateToProps = (state) => ({
+  loading: state.search.loading,
+  error: state.search.error,
+  list: state.search.searchList,
+});
+
+export default withRouter(connect(mapStateToProps)(SearchResults));
