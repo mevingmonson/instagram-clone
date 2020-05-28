@@ -1,36 +1,58 @@
-import { db } from '../../lib/firebase';
+import firebase, { db, auth } from '../../lib/firebase';
 import { profileActions } from '../ActionTypes';
 
 export const fetchUserDetails = (username) => async (dispatch) => {
-  if (!username) {
-    throw new Error('Invalid Link');
-  }
   try {
+    if (!username) {
+      throw new Error('Invalid Link');
+    }
+
     dispatch({
       type: profileActions.PROFILE_FETCH_START,
     });
     // fetching the (other)userDetails from profile URL
-    const details = await db.collection('users')
-      .where('username', '==', username.toLowerCase()).get()
-      .then((snapshot) => {
+    await db.collection('users')
+      .where('username', '==', username.toLowerCase())
+      .onSnapshot(async (snapshot) => {
         // if the username is present
         if (snapshot.docs.length) {
           const user = snapshot.docs.pop();
-          return {
+          // details contains the information of other user
+          const details = {
             uid: user.id,
             ...user.data(),
           };
+
+          let followBtnText = 'Follow'; // default case
+          let isFollowRequested = false;
+
+          // if auth user follows other user
+          if (details.followers.includes(auth.currentUser.uid)) {
+            followBtnText = 'Unfollow';
+          }
+          // if other user account is private
+          else if (details.isPrivate) {
+            await db.collection('notifications').doc(`${auth.currentUser.uid}${details.uid}`).get().then((doc) => {
+              if (doc.exists) {
+                followBtnText = 'Cancel Request';
+                isFollowRequested = true;
+              } else {
+                followBtnText = 'Request Follow';
+              }
+            });
+          }
+          // dispatching the information of other user to reducer
+          dispatch({
+            type: profileActions.PROFILE_FETCH_SUCCESS,
+            payload: { ...details, followBtnText, isFollowRequested },
+          });
+        } else {
+          dispatch({
+            type: profileActions.PROFILE_FETCH_FAILED,
+            payload: 'User not found!',
+          });
         }
-        // if the username is not present
-        return null;
       });
-    if (!details) {
-      throw new Error('User Not Found!');
-    }
-    dispatch({
-      type: profileActions.PROFILE_FETCH_SUCCESS,
-      payload: details,
-    });
   } catch (error) {
     dispatch({
       type: profileActions.PROFILE_FETCH_FAILED,
@@ -43,4 +65,47 @@ export const clearData = () => (dispatch) => {
   dispatch({
     type: profileActions.PROFILE_CLEAR,
   });
+};
+
+export const followAction = () => async (dispatch, getState) => {
+  try {
+    // auth User information
+    const { userData: authUserData } = getState().auth;
+    // Search user information
+    const { userDetails: profileUserData } = getState().profile;
+
+    const isFollowing = profileUserData.followers.includes(authUserData.uid);
+
+    if (isFollowing) {
+      await db.collection('users').doc(profileUserData.uid).update({
+        followers: firebase.firestore.FieldValue.arrayRemove(authUserData.uid),
+      });
+      await db.collection('users').doc(authUserData.uid).update({
+        following: firebase.firestore.FieldValue.arrayRemove(profileUserData.uid),
+      });
+    } else if (profileUserData.isPrivate) {
+      if (profileUserData.isFollowRequested) {
+        await db.collection('notifications').doc(`${authUserData.uid}${profileUserData.uid}`).delete();
+      } else {
+        await db.collection('notifications').doc(`${authUserData.uid}${profileUserData.uid}`).set({
+          type: 'FOLLOW_REQUEST', // LIKES or COMMENT or FOLLOW_REQUEST
+          timeStamp: new Date().toISOString(),
+          requestedBy: authUserData.uid,
+          requestedTo: profileUserData.uid,
+        });
+      }
+      db.collection('users').doc(profileUserData.uid).update({
+        timeStamp: new Date().toISOString(),
+      });
+    } else {
+      await db.collection('users').doc(profileUserData.uid).update({
+        followers: firebase.firestore.FieldValue.arrayUnion(authUserData.uid),
+      });
+      await db.collection('users').doc(authUserData.uid).update({
+        following: firebase.firestore.FieldValue.arrayUnion(profileUserData.uid),
+      });
+    }
+  } catch (error) {
+    alert('Something went wrong!');
+  }
 };

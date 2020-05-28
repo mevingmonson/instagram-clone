@@ -26,4 +26,5 @@ export {
   credentials,
   db,
   storage,
+  firebase as default,
 };

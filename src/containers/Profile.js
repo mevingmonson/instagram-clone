@@ -47,7 +47,10 @@ class Profile extends Component {
             {/* userDetails contains the details of other user not the loggedInUser details */}
             <UserInfo isOtherUser={!!this.props.userDetails} userData={this.props.userDetails} />
             <hr />
-            <Posts />
+            {!(this.props.userDetails && this.props.userDetails.isPrivate)
+              ? <Posts /> : (
+                <p>Private Profile</p>
+              )}
           </>
         )}
 
